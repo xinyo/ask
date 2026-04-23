@@ -1,0 +1,14 @@
+[
+  {
+    "name": "ChatGPT",
+    "urlTemplate": "https://chatgpt.com/?q={{question}}"
+  },
+  {
+    "name": "Claude",
+    "urlTemplate": "https://claude.ai/new?q={{question}}"
+  },
+  {
+    "name": "Perplexity",
+    "urlTemplate": "https://www.perplexity.ai/search?q={{question}}"
+  }
+]
