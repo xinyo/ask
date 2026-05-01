@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Link, Navigate, Route, Routes, useNavigate, useSearchParams } from "react-router";
+import { Link, Navigate, Route, Routes, useSearchParams } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,18 +12,19 @@ function getIframeUrl(urlTemplate: string, question: string) {
 
 function HomePage() {
   const [question, setQuestion] = useState("");
-  const navigate = useNavigate();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const trimmedQuestion = question.trim();
 
-    navigate(
-      trimmedQuestion
-        ? `/ask?q=${encodeURIComponent(trimmedQuestion)}`
-        : "/ask",
-    );
+    iframeTargets.forEach((target) => {
+      window.open(
+        getIframeUrl(target.urlTemplate, trimmedQuestion),
+        "_blank",
+        "noopener,noreferrer",
+      );
+    });
   }
 
   return (

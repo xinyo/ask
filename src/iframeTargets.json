@@ -10,5 +10,14 @@
   {
     "name": "Perplexity",
     "urlTemplate": "https://www.perplexity.ai/search?q={{question}}"
+  },
+  {
+    "name": "Bing",
+    "urlTemplate": "https://www.bing.com/search?q={{question}}"
+  },
+  {
+    "name": "z.ai",
+    "urlTemplate": "https://chat.z.ai/?q={{question}}"
   }
+
 ]

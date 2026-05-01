@@ -1,11 +1,12 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import App from "./App";
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
 });
 
 function renderApp(initialPath = "/") {
@@ -29,7 +30,9 @@ describe("App routes", () => {
     expect(screen.getByRole("button", { name: "ask" })).toBeTruthy();
   });
 
-  it("navigates to the iframe route with the submitted question", async () => {
+  it("opens configured targets in new tabs with the submitted question", () => {
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+
     renderApp();
 
     fireEvent.change(screen.getByRole("textbox", { name: "Question" }), {
@@ -37,7 +40,22 @@ describe("App routes", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "ask" }));
 
-    expect(await screen.findByText("How do React routes work?")).toBeTruthy();
+    expect(openSpy).toHaveBeenCalledTimes(3);
+    expect(openSpy).toHaveBeenCalledWith(
+      "https://chatgpt.com/?q=How%20do%20React%20routes%20work%3F",
+      "_blank",
+      "noopener,noreferrer",
+    );
+    expect(openSpy).toHaveBeenCalledWith(
+      "https://claude.ai/new?q=How%20do%20React%20routes%20work%3F",
+      "_blank",
+      "noopener,noreferrer",
+    );
+    expect(openSpy).toHaveBeenCalledWith(
+      "https://www.perplexity.ai/search?q=How%20do%20React%20routes%20work%3F",
+      "_blank",
+      "noopener,noreferrer",
+    );
   });
 
   it("renders answer frames on the ask route", () => {
